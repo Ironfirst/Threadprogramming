@@ -2,6 +2,9 @@
 public class SimpleThread
 {
 
+    static MessageLoop messageLoop = new MessageLoop();
+    static MessageLoop2 messageLoop2 = new MessageLoop2();
+
     // Display a message, preceded thread
     static void threadMessage(String message){
         String threadName = Thread.currentThread().getName();
@@ -12,129 +15,7 @@ public class SimpleThread
                 message);
     }
 
-    // laver en classe der har et Array med 4 forskellige index 0 til 3
-    // som indeholder en udprints tekst.
 
-    //classen implementere runneable interface som siger at classen
-    // skal indeholde en metode uden input parametre
-    // denne run metode gør det muligt for threads at udføre handlinger
-    // mens threaden er aktiv
-
-    // Classen indeholder også en metode der hedder run
-    // som iterere igennem Array length med en for loop.
-    // den laver en thread.sleep på 4000 som er 4 sec.
-    // dette gør at processen venter 4 sec med at køre mellem hver iteration.
-
-    // efter der er gået 4 sec bruger den threadMessage metoden med
-    // array udprint af iterator variable i.
-    private static class MessageLoop implements Runnable {
-
-       public int threadMessageCount=0;
-
-
-        public void run() {
-            String importantInfo[] = {
-                    "Mares eat oats",
-                    "Does eat oats",
-                    "Little lambs eat ivy",
-                    "A kid will eat ivy too"
-            };
-
-
-
-            //
-
-            try {
-
-                for ( int i = 0; i< importantInfo.length; i++){
-                    //int randomInterval =
-                    // pause for random number between 0 and 5000
-                    // 0 is 0 sec and 5000 is 5 sec
-                    long randomInterval = (long)(Math.random()*5000)+1;
-                    Thread.sleep(randomInterval);
-                    System.out.println("The wait interval was " + randomInterval+ " Miliseconds");
-                    //threadMessage = static void threadMessage(String message)
-                    // Print a message
-
-                    threadMessage(importantInfo[i]);
-                    threadMessageCount++;
-
-
-                    System.out.println("Thread 1 message count is "+threadMessageCount);
-                }
-            }
-            // hvis Thread bliver interrupted bliver denne String
-            // skrevet alså "i wasn't done"
-            catch(InterruptedException e) {
-                threadMessage("I wasn't done");
-
-            }
-        }
-
-        public int getThreadOneMessageCount(){
-            return threadMessageCount;
-        }
-    }
-
-    // her skal jeg lave en ny tråd som skal printe en anden besked og holde styr på hvor
-    // mange beskeder den har sendt. de 2 seperate tråde skal så sammenligned med hinanden
-    // og kun sende tråde hvis den anden tråd har samme count.
-
-    private static class MessageLoop2 implements Runnable{
-
-        public int threadTwoMessageCount=0;
-
-        public int getThreadTwoCount() {
-            return threadTwoMessageCount;
-        }
-
-        public void run(){
-            String superPrint[]= {
-              "Super",
-              "Speed",
-              "Thread",
-              "Output",
-            };
-
-
-
-
-
-
-            // lav en forloop med SuperPrint length
-            // som så printer ud hele tiden og tæller.
-            // sammenligningen med den andn tråd skal ske efter noget tid.
-            // og den tråd der så har printet mest skal interuptes.
-try{
-
-    for(int j=0;j<= 10; j++){
-
-        Thread.sleep((long)(Math.random()*2000)+1);
-
-        if(j<4){
-            threadMessage(superPrint[j]);
-            threadTwoMessageCount++;
-            System.out.println("Thread two's message count is "+threadTwoMessageCount);
-        }
-
-        else if(j>= superPrint.length){
-            threadMessage(superPrint[0]+" "+superPrint[1]);
-            threadTwoMessageCount++;
-            System.out.println("Thread two's message count is "+threadTwoMessageCount);
-        }
-        else{
-            System.out.println("something went wrong in the else if statements in thread 2" +
-                    "and it got into the else statement wich was not the plan");
-        }
-    }
-
-} catch (InterruptedException e) {
-    System.out.println("Something Interrupted thread 2");
-    e.printStackTrace();
-}
-
-        }
-    }
 
     public static void main(String[] args)
 
@@ -175,10 +56,27 @@ try{
 
         Thread u = new Thread(new MessageLoop2());
         u.start();
-        while(u.isAlive()) {
-            if(System.currentTimeMillis()<4000){
-                u.getThreadOneMessageCount();
-            }
+        if(messageLoop2.getThreadTwoCount()>5){
+
+
+
+                if(messageLoop.getThreadOneCount() > messageLoop2.getThreadTwoCount()){
+                    threadMessage("the first thread was too active and thread 2 made 1 stop");
+                    t.interrupt();
+                    //u.join(10000);
+                }
+                else if(messageLoop2.getThreadTwoCount() > messageLoop.getThreadOneCount()) {
+                    threadMessage("the second thread was too active and thread 1 made 2 stop");
+                    u.interrupt();
+                    //t.join(10000);
+
+                }
+                else{System.out.println("System.currentime - start time reached but no if statement executed?!");}
+
+//            else if(System.currentTimeMillis()>4000){
+//
+//                threadMessage("nothing to report");
+//            }
         }
 
         // isAlive metoden checker om Thread T er aktiv
