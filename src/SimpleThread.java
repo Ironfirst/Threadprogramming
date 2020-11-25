@@ -28,6 +28,10 @@ public class SimpleThread
     // efter der er gået 4 sec bruger den threadMessage metoden med
     // array udprint af iterator variable i.
     private static class MessageLoop implements Runnable {
+
+       public int threadMessageCount=0;
+
+
         public void run() {
             String importantInfo[] = {
                     "Mares eat oats",
@@ -36,7 +40,7 @@ public class SimpleThread
                     "A kid will eat ivy too"
             };
 
-            int threadMessageCount=0;
+
 
             //
 
@@ -56,15 +60,19 @@ public class SimpleThread
                     threadMessageCount++;
 
 
-                    System.out.println("The message count is "+threadMessageCount);
+                    System.out.println("Thread 1 message count is "+threadMessageCount);
                 }
             }
             // hvis Thread bliver interrupted bliver denne String
-            // skrevet alså "i asent done"
+            // skrevet alså "i wasn't done"
             catch(InterruptedException e) {
                 threadMessage("I wasn't done");
 
             }
+        }
+
+        public int getThreadOneMessageCount(){
+            return threadMessageCount;
         }
     }
 
@@ -74,6 +82,12 @@ public class SimpleThread
 
     private static class MessageLoop2 implements Runnable{
 
+        public int threadTwoMessageCount=0;
+
+        public int getThreadTwoCount() {
+            return threadTwoMessageCount;
+        }
+
         public void run(){
             String superPrint[]= {
               "Super",
@@ -82,11 +96,42 @@ public class SimpleThread
               "Output",
             };
 
+
+
+
+
+
             // lav en forloop med SuperPrint length
             // som så printer ud hele tiden og tæller.
             // sammenligningen med den andn tråd skal ske efter noget tid.
             // og den tråd der så har printet mest skal interuptes.
+try{
 
+    for(int j=0;j<= 10; j++){
+
+        Thread.sleep((long)(Math.random()*2000)+1);
+
+        if(j<4){
+            threadMessage(superPrint[j]);
+            threadTwoMessageCount++;
+            System.out.println("Thread two's message count is "+threadTwoMessageCount);
+        }
+
+        else if(j>= superPrint.length){
+            threadMessage(superPrint[0]+" "+superPrint[1]);
+            threadTwoMessageCount++;
+            System.out.println("Thread two's message count is "+threadTwoMessageCount);
+        }
+        else{
+            System.out.println("something went wrong in the else if statements in thread 2" +
+                    "and it got into the else statement wich was not the plan");
+        }
+    }
+
+} catch (InterruptedException e) {
+    System.out.println("Something Interrupted thread 2");
+    e.printStackTrace();
+}
 
         }
     }
@@ -114,17 +159,27 @@ public class SimpleThread
                 System.exit(1);
             }
         }
-
         */
 
-        threadMessage("Starting MessageLoop thread");
+
+
+        threadMessage("Starting MessageLoop threads");
         long startTime = System.currentTimeMillis();
         Thread t = new Thread(new MessageLoop());
         t.start();
 
+
+
+        // loop until MessageLoop thread exits
         threadMessage("Waiting for MessageLoop thread to finish");
-        // loop until MessageLoop
-        // thread exits
+
+        Thread u = new Thread(new MessageLoop2());
+        u.start();
+        while(u.isAlive()) {
+            if(System.currentTimeMillis()<4000){
+                u.getThreadOneMessageCount();
+            }
+        }
 
         // isAlive metoden checker om Thread T er aktiv
         // ( har været startet og ikke er afsluttet endnu)
@@ -138,6 +193,7 @@ public class SimpleThread
             // to finish.
 
             t.join(1000);
+
 
             // if statement der printer en besked hvis
             // currentime - starttime er længere end 1 time.
