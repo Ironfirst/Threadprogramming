@@ -61,19 +61,20 @@ public class SimpleThread
         MessageLoop2 messageLoop2 = new MessageLoop2();
         Thread u = new Thread(messageLoop2);
         u.start();
-        while(t.isAlive() && u.isAlive()){
+
+        while(t.isAlive() || u.isAlive()){
 
             while (u.isAlive()) {
 
                 if (messageLoop.getThreadOneCount() > messageLoop2.getThreadTwoCount()) {
                     threadMessage("the first thread was too active and thread 2 made 1 stop");
 //                    t.interrupt();
-                    u.join(6000);
+                    u.join(5000);
 //
                 } else if (messageLoop2.getThreadTwoCount() > messageLoop.getThreadOneCount()) {
                     threadMessage("the second thread was too active and thread 1 made 2 stop");
 //                    u.interrupt();
-                    t.join(6000);
+                    t.join(5000);
 
                 }
             }
@@ -83,12 +84,12 @@ public class SimpleThread
                 if (messageLoop.getThreadOneCount() > messageLoop2.getThreadTwoCount()) {
                     threadMessage("the first thread was too active and thread 2 made 1 stop");
 //                    t.interrupt();
-                    u.join(6000);
+                    u.join(5000);
 //
                 } else if (messageLoop2.getThreadTwoCount() > messageLoop.getThreadOneCount()) {
                     threadMessage("the second thread was too active and thread 1 made 2 stop");
 //                    u.interrupt();
-                    t.join(6000);
+                    t.join(5000);
 
                 }
             }

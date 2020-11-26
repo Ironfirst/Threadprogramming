@@ -64,6 +64,8 @@ class MessageLoop implements Runnable {
 
 
                 threadMessage("Thread 1 message count is "+threadMessageCount);
+
+                Thread.sleep(5000);
             }
         }
         // hvis Thread bliver interrupted bliver denne String

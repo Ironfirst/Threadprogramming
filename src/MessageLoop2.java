@@ -48,16 +48,19 @@ class MessageLoop2 implements Runnable{
                     threadMessage(superPrint[j]);
                     threadTwoMessageCount++;
                     threadMessage("Thread two's message count is "+threadTwoMessageCount);
+                    Thread.sleep(5000);
                 }
 
                 else if(j>= superPrint.length){
                     threadMessage(superPrint[0]+" "+superPrint[1]);
                     threadTwoMessageCount++;
                     threadMessage("Thread two's message count is "+threadTwoMessageCount);
+                    Thread.sleep(5000);
                 }
                 else{
                     threadMessage("something went wrong in the else if statements in thread 2" +
                             "and it got into the else statement wich was not the plan");
+                    Thread.sleep(5000);
                 }
             }
 
