@@ -28,10 +28,10 @@ class MessageLoop implements Runnable {
                 message);
     }
 
-    public static int threadMessageCount=0;
+    public int threadMessageCount=0;
 
 
-    public int getThreadOneCount() {
+    protected int getThreadOneCount() {
         return threadMessageCount;
     }
 

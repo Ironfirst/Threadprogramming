@@ -15,9 +15,9 @@ class MessageLoop2 implements Runnable{
     }
 
 
-    public static int threadTwoMessageCount=0;
+    public int threadTwoMessageCount=0;
 
-    public int getThreadTwoCount() {
+    protected int getThreadTwoCount() {
         return threadTwoMessageCount;
     }
 

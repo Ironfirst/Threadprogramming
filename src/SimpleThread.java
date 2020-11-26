@@ -2,8 +2,7 @@
 public class SimpleThread
 {
 
-    static MessageLoop messageLoop = new MessageLoop();
-    static MessageLoop2 messageLoop2 = new MessageLoop2();
+
 
     // Display a message, preceded thread
     static void threadMessage(String message){
@@ -20,6 +19,9 @@ public class SimpleThread
     public static void main(String[] args)
 
             throws InterruptedException {
+
+
+
         //Delay, in miliseconds before
         // we interrupts MessageLoop
         // thread ( default one hour).
@@ -46,7 +48,9 @@ public class SimpleThread
 
         threadMessage("Starting MessageLoop threads");
         long startTime = System.currentTimeMillis();
-        Thread t = new Thread(new MessageLoop());
+
+        MessageLoop messageLoop = new MessageLoop();
+        Thread t = new Thread(messageLoop);
         t.start();
 
 
@@ -54,31 +58,46 @@ public class SimpleThread
         // loop until MessageLoop thread exits
         threadMessage("Waiting for MessageLoop thread to finish");
 
-        Thread u = new Thread(new MessageLoop2());
+        MessageLoop2 messageLoop2 = new MessageLoop2();
+        Thread u = new Thread(messageLoop2);
         u.start();
-        if(messageLoop2.getThreadTwoCount()>5){
+        while(t.isAlive() && u.isAlive()){
 
+            while (u.isAlive()) {
 
-
-                if(messageLoop.getThreadOneCount() > messageLoop2.getThreadTwoCount()){
+                if (messageLoop.getThreadOneCount() > messageLoop2.getThreadTwoCount()) {
                     threadMessage("the first thread was too active and thread 2 made 1 stop");
-                    t.interrupt();
-                    //u.join(10000);
-                }
-                else if(messageLoop2.getThreadTwoCount() > messageLoop.getThreadOneCount()) {
+//                    t.interrupt();
+                    u.join(6000);
+//
+                } else if (messageLoop2.getThreadTwoCount() > messageLoop.getThreadOneCount()) {
                     threadMessage("the second thread was too active and thread 1 made 2 stop");
-                    u.interrupt();
-                    //t.join(10000);
+//                    u.interrupt();
+                    t.join(6000);
 
                 }
-                else{System.out.println("System.currentime - start time reached but no if statement executed?!");}
+            }
 
+            while (t.isAlive()) {
+
+                if (messageLoop.getThreadOneCount() > messageLoop2.getThreadTwoCount()) {
+                    threadMessage("the first thread was too active and thread 2 made 1 stop");
+//                    t.interrupt();
+                    u.join(6000);
+//
+                } else if (messageLoop2.getThreadTwoCount() > messageLoop.getThreadOneCount()) {
+                    threadMessage("the second thread was too active and thread 1 made 2 stop");
+//                    u.interrupt();
+                    t.join(6000);
+
+                }
+            }
 //            else if(System.currentTimeMillis()>4000){
 //
 //                threadMessage("nothing to report");
 //            }
-        }
 
+        }
         // isAlive metoden checker om Thread T er aktiv
         // ( har været startet og ikke er afsluttet endnu)
 
