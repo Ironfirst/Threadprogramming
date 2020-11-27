@@ -40,7 +40,7 @@ class MessageLoop2 implements Runnable{
         // og den tråd der så har printet mest skal interuptes.
         try{
 
-            for(int j=0;j<= 10; j++){
+            for(int j=0;j<= 5; j++){
 
                 Thread.sleep((long)(Math.random()*2000)+1);
 
@@ -51,12 +51,24 @@ class MessageLoop2 implements Runnable{
                     Thread.sleep(5000);
                 }
 
+                // fik løst opgaven da jeg lod være med af komme med smarte array udprint som var over længden af den anden tråd
+
+
+                else if(j<=5){
+                    Thread.interrupted();
+                }
+
+                // prøv af lade være med af være fancy her
+/*
                 else if(j>= superPrint.length){
                     threadMessage(superPrint[0]+" "+superPrint[1]);
                     threadTwoMessageCount++;
                     threadMessage("Thread two's message count is "+threadTwoMessageCount);
                     Thread.sleep(5000);
+                    Thread.interrupted();
                 }
+
+ */
                 else{
                     threadMessage("something went wrong in the else if statements in thread 2" +
                             "and it got into the else statement wich was not the plan");

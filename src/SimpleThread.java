@@ -62,19 +62,19 @@ public class SimpleThread
         Thread u = new Thread(messageLoop2);
         u.start();
 
-        while(t.isAlive() || u.isAlive()){
+
 
             while (u.isAlive()) {
 
                 if (messageLoop.getThreadOneCount() > messageLoop2.getThreadTwoCount()) {
                     threadMessage("the first thread was too active and thread 2 made 1 stop");
 //                    t.interrupt();
-                    u.join(5000);
+                    u.join(7000);
 //
                 } else if (messageLoop2.getThreadTwoCount() > messageLoop.getThreadOneCount()) {
-                    threadMessage("the second thread was too active and thread 1 made 2 stop");
+                    threadMessage("the second thread was too active and thread 1 made 2 stop first loop");
 //                    u.interrupt();
-                    t.join(5000);
+                    t.join(7000);
 
                 }
             }
@@ -84,12 +84,12 @@ public class SimpleThread
                 if (messageLoop.getThreadOneCount() > messageLoop2.getThreadTwoCount()) {
                     threadMessage("the first thread was too active and thread 2 made 1 stop");
 //                    t.interrupt();
-                    u.join(5000);
+                    u.join(7000);
 //
                 } else if (messageLoop2.getThreadTwoCount() > messageLoop.getThreadOneCount()) {
-                    threadMessage("the second thread was too active and thread 1 made 2 stop");
+                    threadMessage("the second thread was too active and thread 1 made 2 stop second loop");
 //                    u.interrupt();
-                    t.join(5000);
+                    t.join(7000);
 
                 }
             }
@@ -98,7 +98,7 @@ public class SimpleThread
 //                threadMessage("nothing to report");
 //            }
 
-        }
+
         // isAlive metoden checker om Thread T er aktiv
         // ( har været startet og ikke er afsluttet endnu)
 
